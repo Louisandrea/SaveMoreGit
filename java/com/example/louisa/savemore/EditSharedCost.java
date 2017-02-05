@@ -22,47 +22,45 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class EditSavingGoals extends BaseActivity {
+public class EditSharedCost extends BaseActivity {
     @Bind(R.id.name)
     EditText name;
     @Bind(R.id.email)
     EditText email;
     @Bind(R.id.price)
     EditText price;
-    @Bind(R.id.descriptionSave)
-    EditText description;
+
     @Bind(R.id.btn_save)
     Button btn_save;
 
-    SavingGoals savingGoals;
+    SharedCost sharedCost;
     DatabaseReference databaseRef;
     String key;
     String senderEmail;
-    String goalName;
+    String productName;
     String receiverEmail;
-    String descriptionSave;
     float amountToShare;
     float totalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_saving_goals);
+        setContentView(R.layout.activity_edit_shared_cost);
 
         ButterKnife.bind(this);
 
         key = getIntent().getExtras().getString("key");
-        savingGoals = (SavingGoals) getIntent().getExtras().getSerializable("item");
-        databaseRef = mDatabase.getReference("savingGoals");
+        sharedCost = (SharedCost) getIntent().getExtras().getSerializable("item");
+        databaseRef = mDatabase.getReference("sharedCost");
         displayContent();
 
         setClickEvents();
     }
 
     private void displayContent() {
-        name.setText(savingGoals.getName());
-        email.setText(savingGoals.getEmail());
-        price.setText(String.valueOf(savingGoals.getTotal_amount()));
+        name.setText(sharedCost.getName());
+        email.setText(sharedCost.getEmail());
+        price.setText(String.valueOf(sharedCost.getTotal_amount()));
 
     }
 
@@ -84,9 +82,8 @@ public class EditSavingGoals extends BaseActivity {
             //String loginUserId = mAuth.getCurrentUser();
             senderEmail = mAuth.getCurrentUser().getEmail();
 
-            goalName = name.getText().toString();
+            productName = name.getText().toString();
             receiverEmail = email.getText().toString();
-            descriptionSave = description.getText().toString();
             amountToShare = Float.parseFloat(price.getText().toString());
             //mDatabase.getReference("sharedCost").child (productName).child(receiverEmail).child(amountToShare)
 
@@ -97,15 +94,13 @@ public class EditSavingGoals extends BaseActivity {
 
     private void saveCosts() {
         amountToShare = amountToShare / 2;
-        SavingGoals savingGoals = new SavingGoals();
-        savingGoals.setEmail(receiverEmail);
-        savingGoals.setName(goalName);
-        savingGoals.setGoalAmount(amountToShare);
-        savingGoals.setDescription(descriptionSave);
-        savingGoals.setSender_email(senderEmail);
+        SharedCost sharedCost = new SharedCost();
+        sharedCost.setEmail(receiverEmail);
+        sharedCost.setName(productName);
+        sharedCost.setPrice(amountToShare);
+        sharedCost.setSender_email(senderEmail);
         senderEmail = cleanEmail(senderEmail);
-
-        Map<String, Object> shareValues = savingGoals.toMap();
+        Map<String, Object> shareValues = sharedCost.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, shareValues);
 
@@ -128,8 +123,9 @@ public class EditSavingGoals extends BaseActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Goal Shared", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Cost Shared", Toast.LENGTH_LONG).show();
 
+                    //finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Unable to save at the moment", Toast.LENGTH_LONG).show();
                 }
