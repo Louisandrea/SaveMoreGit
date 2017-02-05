@@ -63,26 +63,23 @@ tools:context="com.example.louisa.savemore.AddSharedCost">
             android:inputType="numberDecimal"
             android:maxLines="1" />
 
-    <EditText
-        android:id="@+id/descriptionSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/description"
-        android:inputType="text"
-        android:maxLines="1" />
-
-
-
     <ImageView
-        android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_gravity="center"
         android:scaleType="centerInside"
         android:visibility="gone"
         app:srcCompat="@mipmap/ic_collections_black"
-        android:id="@+id/imageView" />
+        android:id="@+id/imageView"
+        android:layout_width="150dp" />
 
 
 </LinearLayout>
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_camera_alt_black"
+        android:id="@+id/btn_capture" />
 
     <Button
         android:id="@+id/btn_save"
